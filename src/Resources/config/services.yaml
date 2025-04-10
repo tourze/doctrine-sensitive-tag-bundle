@@ -8,7 +8,3 @@ services:
     resource: '../../EventSubscriber/'
   Tourze\DoctrineSensitiveTagBundle\Service\:
     resource: '../../Service/'
-
-  doctrine-sensitive-tag.property-accessor:
-    class: Symfony\Component\PropertyAccess\PropertyAccessor
-    factory: [ 'Symfony\Component\PropertyAccess\PropertyAccess', 'createPropertyAccessor' ]

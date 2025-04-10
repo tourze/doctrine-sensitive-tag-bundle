@@ -1,6 +1,6 @@
 <?php
 
-namespace Tourze\DoctrineSensitiveTagBundle\Attribute;
+namespace Tourze\DoctrineSensitiveTagBundle\Model;
 
 /**
  * 标记字段是敏感字段
@@ -17,19 +17,10 @@ namespace Tourze\DoctrineSensitiveTagBundle\Attribute;
  *
  * @see https://www.tc260.org.cn/front/postDetail.html?id=20211231160823
  */
-#[\Attribute(\Attribute::TARGET_PROPERTY)]
-class SensitiveColumn
+interface SensitiveTagAwareInterface
 {
-    public const LEVEL_1 = '1';
-
-    public const LEVEL_2 = '2';
-
-    public const LEVEL_3 = '3';
-
-    public const LEVEL_4 = '4';
-
-    public function __construct(
-        public readonly string $level = self::LEVEL_1,
-    ) {
-    }
+    /**
+     * 标记当前资源是否是敏感类型数据
+     */
+    public function isResourceSensitive(): bool;
 }
