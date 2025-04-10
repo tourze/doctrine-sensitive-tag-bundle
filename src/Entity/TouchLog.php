@@ -4,7 +4,6 @@ namespace Tourze\DoctrineSensitiveTagBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Attribute\Groups;
 use Tourze\DoctrineIndexedBundle\Attribute\IndexColumn;
 use Tourze\DoctrineIpBundle\Attribute\CreateIpColumn;
 use Tourze\DoctrineTimestampBundle\Attribute\CreateTimeColumn;
@@ -14,7 +13,6 @@ use Tourze\DoctrineUserBundle\Attribute\CreatedByColumn;
 #[ORM\Table(name: 'doctrine_sensitive_tag_touch_log', options: ['comment' => '实体接触日志'])]
 class TouchLog
 {
-    #[Groups(['restful_read', 'api_tree', 'admin_curd', 'api_list'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: Types::INTEGER, options: ['comment' => 'ID'])]
@@ -33,7 +31,6 @@ class TouchLog
 
     #[IndexColumn]
     #[CreateTimeColumn]
-    #[Groups(['restful_read', 'admin_curd'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true, options: ['comment' => '创建时间'])]
     private ?\DateTimeInterface $createTime = null;
 
