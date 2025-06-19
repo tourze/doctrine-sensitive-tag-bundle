@@ -6,41 +6,36 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Tourze\DoctrineIndexedBundle\Attribute\IndexColumn;
 use Tourze\DoctrineIpBundle\Attribute\CreateIpColumn;
-use Tourze\DoctrineTimestampBundle\Attribute\CreateTimeColumn;
-use Tourze\DoctrineUserBundle\Attribute\CreatedByColumn;
+use Tourze\DoctrineTimestampBundle\Traits\CreateTimeAware;
+use Tourze\DoctrineUserBundle\Traits\CreatedByAware;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'doctrine_sensitive_tag_touch_log', options: ['comment' => '实体接触日志'])]
-class TouchLog
+class TouchLog implements \Stringable
 {
+    use CreateTimeAware;
+    use CreatedByAware;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: Types::INTEGER, options: ['comment' => 'ID'])]
     private ?int $id = 0;
 
     #[IndexColumn]
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, options: ['comment' => '对象类名'])]
     private string $objectClass;
 
     #[IndexColumn]
-    #[ORM\Column(length: 64)]
+    #[ORM\Column(length: 64, options: ['comment' => '对象ID'])]
     private string $objectId;
 
-    #[ORM\Column(length: 20)]
+    #[ORM\Column(length: 20, options: ['comment' => '操作动作'])]
     private string $action;
-
-    #[IndexColumn]
-    #[CreateTimeColumn]
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true, options: ['comment' => '创建时间'])]
-    private ?\DateTimeInterface $createTime = null;
 
     #[CreateIpColumn]
     #[ORM\Column(length: 45, nullable: true, options: ['comment' => '创建时IP'])]
     private ?string $createdFromIp = null;
 
-    #[CreatedByColumn]
-    #[ORM\Column(nullable: true, options: ['comment' => '创建人'])]
-    private ?string $createdBy = null;
 
     public function getId(): ?int
     {
@@ -83,18 +78,6 @@ class TouchLog
         return $this;
     }
 
-    public function setCreateTime(?\DateTimeInterface $createdAt): self
-    {
-        $this->createTime = $createdAt;
-
-        return $this;
-    }
-
-    public function getCreateTime(): ?\DateTimeInterface
-    {
-        return $this->createTime;
-    }
-
     public function getCreatedFromIp(): ?string
     {
         return $this->createdFromIp;
@@ -105,13 +88,8 @@ class TouchLog
         $this->createdFromIp = $createdFromIp;
     }
 
-    public function setCreatedBy(?string $createdBy): void
+    public function __toString(): string
     {
-        $this->createdBy = $createdBy;
-    }
-
-    public function getCreatedBy(): ?string
-    {
-        return $this->createdBy;
+        return sprintf('TouchLog[%s:%s:%s]', $this->objectClass, $this->objectId, $this->action);
     }
 }

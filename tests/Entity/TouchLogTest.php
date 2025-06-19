@@ -27,7 +27,7 @@ class TouchLogTest extends TestCase
         $this->assertEquals($action, $touchLog->getAction());
 
         // 测试 CreateTime 的 getter 和 setter
-        $createTime = new \DateTime();
+        $createTime = new \DateTimeImmutable();
         $touchLog->setCreateTime($createTime);
         $this->assertSame($createTime, $touchLog->getCreateTime());
 
@@ -53,6 +53,6 @@ class TouchLogTest extends TestCase
         $this->assertInstanceOf(TouchLog::class, $touchLog->setObjectClass('TestClass'));
         $this->assertInstanceOf(TouchLog::class, $touchLog->setObjectId('123'));
         $this->assertInstanceOf(TouchLog::class, $touchLog->setAction('test'));
-        $this->assertInstanceOf(TouchLog::class, $touchLog->setCreateTime(new \DateTime()));
+        $this->assertInstanceOf(TouchLog::class, $touchLog->setCreateTime(new \DateTimeImmutable()));
     }
 }

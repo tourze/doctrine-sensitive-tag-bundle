@@ -19,7 +19,9 @@ class SensitiveTagAwareInterfaceTest extends TestCase
 
         $method = $reflectionClass->getMethod('isResourceSensitive');
         $this->assertTrue($method->hasReturnType());
-        $this->assertEquals('bool', $method->getReturnType()->getName());
+        $returnType = $method->getReturnType();
+        $this->assertInstanceOf(\ReflectionNamedType::class, $returnType);
+        $this->assertEquals('bool', $returnType->getName());
     }
 
     public function testImplementation(): void
