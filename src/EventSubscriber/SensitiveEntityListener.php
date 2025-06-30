@@ -16,13 +16,13 @@ use Tourze\DoctrineSensitiveTagBundle\Model\SensitiveTagAwareInterface;
 /**
  * 在读取数据时判断并记录敏感标签
  */
-#[AsDoctrineListener(event: Events::prePersist, priority: self::priority)]
-#[AsDoctrineListener(event: Events::preUpdate, priority: self::priority)]
-#[AsDoctrineListener(event: Events::preRemove, priority: self::priority)]
-#[AsDoctrineListener(event: Events::postLoad, priority: self::priority)]
+#[AsDoctrineListener(event: Events::prePersist, priority: self::PRIORITY)]
+#[AsDoctrineListener(event: Events::preUpdate, priority: self::PRIORITY)]
+#[AsDoctrineListener(event: Events::preRemove, priority: self::PRIORITY)]
+#[AsDoctrineListener(event: Events::postLoad, priority: self::PRIORITY)]
 class SensitiveEntityListener
 {
-    const priority = -999;
+    const PRIORITY = -999;
 
     public function prePersist(PrePersistEventArgs $eventArgs): void
     {

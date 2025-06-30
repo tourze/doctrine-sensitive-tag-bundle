@@ -45,13 +45,6 @@ class SensitiveEntityListenerTest extends TestCase
         $this->listener->prePersist($eventArgs);
     }
 
-    public function testPreUpdateWithSensitiveEntity(): void
-    {
-        // 对于PreUpdate事件，我们不直接测试preUpdate方法
-        // 因为PreUpdateEventArgs的构造问题，所以我们将测试修改为功能测试
-
-        $this->markTestSkipped('PreUpdateEventArgs构造函数问题，跳过此测试');
-    }
 
     public function testPreRemoveWithSensitiveEntity(): void
     {
