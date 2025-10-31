@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tourze\DoctrineSensitiveTagBundle\EventSubscriber;
 
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
@@ -22,7 +24,7 @@ use Tourze\DoctrineSensitiveTagBundle\Model\SensitiveTagAwareInterface;
 #[AsDoctrineListener(event: Events::postLoad, priority: self::PRIORITY)]
 class SensitiveEntityListener
 {
-    const PRIORITY = -999;
+    public const PRIORITY = -999;
 
     public function prePersist(PrePersistEventArgs $eventArgs): void
     {
@@ -44,6 +46,7 @@ class SensitiveEntityListener
         $this->handle($eventArgs);
     }
 
+    /** @phpstan-ignore missingType.generics */
     private function handle(LifecycleEventArgs $eventArgs): void
     {
         $entity = $eventArgs->getObject();

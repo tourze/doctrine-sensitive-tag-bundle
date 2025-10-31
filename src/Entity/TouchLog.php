@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tourze\DoctrineSensitiveTagBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Tourze\DoctrineIndexedBundle\Attribute\IndexColumn;
-use Tourze\DoctrineIpBundle\Attribute\CreateIpColumn;
+use Tourze\DoctrineIpBundle\Traits\CreatedFromIpAware;
 use Tourze\DoctrineTimestampBundle\Traits\CreateTimeAware;
 use Tourze\DoctrineUserBundle\Traits\CreatedByAware;
 
@@ -15,29 +18,31 @@ class TouchLog implements \Stringable
 {
     use CreateTimeAware;
     use CreatedByAware;
+    use CreatedFromIpAware;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: Types::INTEGER, options: ['comment' => 'ID'])]
-    private ?int $id = 0;
+    private int $id = 0;
 
     #[IndexColumn]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
     #[ORM\Column(length: 255, options: ['comment' => '对象类名'])]
     private string $objectClass;
 
     #[IndexColumn]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 64)]
     #[ORM\Column(length: 64, options: ['comment' => '对象ID'])]
     private string $objectId;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 20)]
     #[ORM\Column(length: 20, options: ['comment' => '操作动作'])]
     private string $action;
 
-    #[CreateIpColumn]
-    #[ORM\Column(length: 45, nullable: true, options: ['comment' => '创建时IP'])]
-    private ?string $createdFromIp = null;
-
-
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -47,11 +52,9 @@ class TouchLog implements \Stringable
         return $this->objectClass;
     }
 
-    public function setObjectClass(string $objectClass): static
+    public function setObjectClass(string $objectClass): void
     {
         $this->objectClass = $objectClass;
-
-        return $this;
     }
 
     public function getObjectId(): string
@@ -59,11 +62,9 @@ class TouchLog implements \Stringable
         return $this->objectId;
     }
 
-    public function setObjectId(string $objectId): static
+    public function setObjectId(string $objectId): void
     {
         $this->objectId = $objectId;
-
-        return $this;
     }
 
     public function getAction(): string
@@ -71,21 +72,9 @@ class TouchLog implements \Stringable
         return $this->action;
     }
 
-    public function setAction(string $action): static
+    public function setAction(string $action): void
     {
         $this->action = $action;
-
-        return $this;
-    }
-
-    public function getCreatedFromIp(): ?string
-    {
-        return $this->createdFromIp;
-    }
-
-    public function setCreatedFromIp(?string $createdFromIp): void
-    {
-        $this->createdFromIp = $createdFromIp;
     }
 
     public function __toString(): string

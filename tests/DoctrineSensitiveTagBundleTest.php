@@ -1,18 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tourze\DoctrineSensitiveTagBundle\Tests;
 
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Tourze\DoctrineSensitiveTagBundle\DoctrineSensitiveTagBundle;
+use Tourze\PHPUnitSymfonyKernelTest\AbstractBundleTestCase;
 
-class DoctrineSensitiveTagBundleTest extends TestCase
+/**
+ * @internal
+ */
+#[CoversClass(DoctrineSensitiveTagBundle::class)]
+#[RunTestsInSeparateProcesses]
+final class DoctrineSensitiveTagBundleTest extends AbstractBundleTestCase
 {
-    public function testBundleInheritance(): void
-    {
-        $bundle = new DoctrineSensitiveTagBundle();
-
-        // 验证是否继承自Symfony的Bundle类
-        $this->assertInstanceOf(Bundle::class, $bundle);
-    }
 }

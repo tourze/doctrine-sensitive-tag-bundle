@@ -2,17 +2,22 @@
 
 namespace Tourze\DoctrineSensitiveTagBundle\Tests\Model;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Tourze\DoctrineSensitiveTagBundle\Model\SensitiveTagAwareInterface;
 
-class SensitiveTagAwareInterfaceTest extends TestCase
+/**
+ * @internal
+ */
+#[CoversClass(SensitiveTagAwareInterface::class)]
+final class SensitiveTagAwareInterfaceTest extends TestCase
 {
     public function testInterfaceExists(): void
     {
         $this->assertTrue(interface_exists(SensitiveTagAwareInterface::class));
     }
 
-    public function testMethodSignature(): void
+    public function testInterfaceMethodSignature(): void
     {
         $reflectionClass = new \ReflectionClass(SensitiveTagAwareInterface::class);
         $this->assertTrue($reflectionClass->hasMethod('isResourceSensitive'));
@@ -22,30 +27,18 @@ class SensitiveTagAwareInterfaceTest extends TestCase
         $returnType = $method->getReturnType();
         $this->assertInstanceOf(\ReflectionNamedType::class, $returnType);
         $this->assertEquals('bool', $returnType->getName());
+        $this->assertFalse($returnType->allowsNull());
     }
 
-    public function testImplementation(): void
+    public function testInterfaceContract(): void
     {
-        // 创建一个匿名实现接口的类
-        $sensitiveImpl = new class implements SensitiveTagAwareInterface {
-            private bool $sensitive = true;
+        // 测试接口合约：任何实现该接口的类都必须提供 isResourceSensitive 方法
+        $reflectionClass = new \ReflectionClass(SensitiveTagAwareInterface::class);
+        $methods = $reflectionClass->getMethods();
 
-            public function isResourceSensitive(): bool
-            {
-                return $this->sensitive;
-            }
-
-            public function setSensitive(bool $value): void
-            {
-                $this->sensitive = $value;
-            }
-        };
-
-        // 测试默认为敏感资源
-        $this->assertTrue($sensitiveImpl->isResourceSensitive());
-
-        // 测试切换为非敏感资源
-        $sensitiveImpl->setSensitive(false);
-        $this->assertFalse($sensitiveImpl->isResourceSensitive());
+        $this->assertCount(1, $methods);
+        $this->assertEquals('isResourceSensitive', $methods[0]->getName());
+        $this->assertTrue($methods[0]->isPublic());
+        $this->assertFalse($methods[0]->isStatic());
     }
 }
