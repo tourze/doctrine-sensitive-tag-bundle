@@ -46,7 +46,6 @@ class SensitiveEntityListener
         $this->handle($eventArgs);
     }
 
-    /** @phpstan-ignore missingType.generics */
     private function handle(LifecycleEventArgs $eventArgs): void
     {
         $entity = $eventArgs->getObject();
